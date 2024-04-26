@@ -1,19 +1,8 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import typeDefs from './schema.js';
+import resolvers from './resolvers.js'
 
-// GraphQL schema
-const typeDefs = `#graphql
-  type Todo {
-    id: String,
-    title: String!,
-    content: String!,
-    isDone: Boolean
-  }
-  type Query {
-    todos: [Todo]!,
-    todo(id: String!): Todo
-  }
-`;
 
 // mockup data
 const todos = [
@@ -37,15 +26,7 @@ const todos = [
   },
 ];
 
-// Graphql resolvers
-const resolvers = {
-  Query: {
-    todos: () => todos,
-    todo: (parent, args) => {
-      return todos.find((todo) => todo.id === args.id);
-    },
-  },
-};
+
 // Create a custom plugin to log request information
 const requestLoggerPlugin = {
   requestDidStart(requestContext) {
@@ -68,6 +49,10 @@ const startApolloServer = async () => {
     typeDefs,
     resolvers,
     plugins: [requestLoggerPlugin],
+    cors: {
+      origin: '*',
+      credentials: false,
+    },
   });
 
   const { url } = await startStandaloneServer(server, {
