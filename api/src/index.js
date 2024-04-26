@@ -1,8 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import {typeDefs} from './schema.js';
-import resolvers from './resolvers.js'
-
+import typeDefs from './schema.js';
+import db from './db.js';
 // Create a custom plugin to log request information
 const requestLoggerPlugin = {
   requestDidStart(requestContext) {
@@ -17,6 +16,20 @@ const requestLoggerPlugin = {
       // Optional function to run before execution of the query
       // If needed, you can add more lifecycle hooks here
     };
+  },
+};
+
+// Graphql resolvers
+const resolvers = {
+  Query: {
+    todos: () => db.todos,
+    todo: (parent, args) => {
+      return db.todos.find((todo) => todo.id === args.id);
+    },
+    authors: () => db.authors,
+    author: (parent, args) => {
+      return db.authors.find((author) => author.id === args.id);
+    },
   },
 };
 
