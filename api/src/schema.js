@@ -11,4 +11,26 @@ const typeDefs = `#graphql
     todo(id: String!): Todo
   }
 `;
-export default typeDefs;
+
+// mockup data
+const todos = [
+  {
+    id: '1',
+    title: 'The moon',
+    content: 'Hello World!',
+    isDone: false,
+  },
+  {
+    id: '2',
+    title: 'The Sunset',
+    content: 'say Goodbye',
+    isDone: false,
+  },
+  {
+    id: '3',
+    title: 'Time goes by',
+    content: 'Missing You!',
+    isDone: false,
+  },
+];
+export { typeDefs, todos };

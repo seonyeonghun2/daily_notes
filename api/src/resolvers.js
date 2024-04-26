@@ -1,3 +1,4 @@
+import { todos } from './schema.js';
 // Graphql resolvers
 const resolvers = {
   Query: {
