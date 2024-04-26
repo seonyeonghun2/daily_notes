@@ -1,31 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import typeDefs from './schema.js';
+import {typeDefs} from './schema.js';
 import resolvers from './resolvers.js'
-
-
-// mockup data
-const todos = [
-  {
-    id: '1',
-    title: 'The moon',
-    content: 'Hello World!',
-    isDone: false,
-  },
-  {
-    id: '2',
-    title: 'The Sunset',
-    content: 'say Goodbye',
-    isDone: false,
-  },
-  {
-    id: '3',
-    title: 'Time goes by',
-    content: 'Missing You!',
-    isDone: false,
-  },
-];
-
 
 // Create a custom plugin to log request information
 const requestLoggerPlugin = {
