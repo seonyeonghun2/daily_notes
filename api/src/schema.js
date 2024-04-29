@@ -1,22 +1,27 @@
 // GraphQL schema : Int, Float, String, Boolean, ID
 const typeDefs = `#graphql
-  type Todo {
+  type Note {
     id: String,
     title: String!,
     content: String!,
-    isDone: Boolean
+    due_date: String!,
+    isDone: Boolean,
+    invitee_id: String!
   }
-  type Author {
+  type Invitee {
     id: String!,
-    fname: String!,
-    lname: String!,
+    nickname: String!,
+    relation: String!,
     email: String
   }
   type Query {
-    todos: [Todo]!,
-    todo(id: String!): Todo,
-    authors: [Author],
-    author(id: String!): Author
+    notes: [Note]!,
+    note(id: String!): Note,
+    invitees: [Invitee],
+    invitee(id: String!): Invitee
+  }
+  type Mutation {
+    newNote(content: String): Note!
   }
 `;
 
