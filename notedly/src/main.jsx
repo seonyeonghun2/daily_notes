@@ -1,30 +1,35 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/api',
+  uri: import.meta.env.VITE_SERVER_URL,
   cache: new InMemoryCache(),
 });
-
-
 client
   .query({
     query: gql`
-    query Query {
-      todos {
-        content
-        id
-        isDone
-        title
+      query NotesQuery {
+        notes {
+          id
+          title
+          content
+          due_date
+          invitee_id
+          isDone
+        }
       }
-    }
     `,
   })
   .then((result) => console.log(result));
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ApolloProvider client={client}>
     <App />
-  </React.StrictMode>,
-)
+  </ApolloProvider>
+);
