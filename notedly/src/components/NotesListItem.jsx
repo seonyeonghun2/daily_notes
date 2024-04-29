@@ -1,17 +1,20 @@
 import React from "react";
 
 const NotesListItem = ({ note }) => {
-  if (note) {
-    return <p>No note Item Available</p>;
-  }
+  console.log(note);
   return (
     <>
-      <div>{note.id}</div>
-      <div>{note.title}</div>
-      <div>{note.content}</div>
-      <div>{note.due_date}</div>
-      <div>{note.invitee_id}</div>
-      <div>{note.isDone ? "Done" : "Undone"}</div>
+      {note.map((v, i) => (
+        <ul key={i} className='flex w-full'>
+          <li>{v.id}</li>
+          <li>{v.title}</li>
+          <li>{v.content}</li>
+          <li>{v.due_date}</li>
+          <li>{v.invitee_id}</li>
+          <li>{v.isDone ? "Done" : "Undone"}</li>
+          <li>{v.author_id}</li>
+        </ul>
+      ))}
     </>
   );
 };

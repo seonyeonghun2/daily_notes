@@ -1,21 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
+import NotesListItem from "./NotesListItem";
 
-import NotesListItem from "./NotesListItem.jsx";
 const NotesList = ({ notes, error }) => {
-  useEffect(() => {
-    if (error) {
-      console.error("Error fetching todos:", error);
-    }
-  }, [error]);
+  if (error) {
+    return <p>Error : {error.message}</p>;
+  }
   return (
     <>
-      {error ? (
-        <p>GraphQL Error: {error.message}</p>
-      ) : (
-        notes.map((note) => {
-          return <NotesListItem key={note.id} note={note} />;
-        })
-      )}
+      <div className='Notes'>
+        {notes.map((note, i) => {
+          return <NotesListItem key={i} note={note} />;
+        })}
+      </div>
     </>
   );
 };
