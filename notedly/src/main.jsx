@@ -12,22 +12,6 @@ const client = new ApolloClient({
   uri: import.meta.env.VITE_SERVER_URL,
   cache: new InMemoryCache(),
 });
-client
-  .query({
-    query: gql`
-      query NotesQuery {
-        notes {
-          id
-          title
-          content
-          due_date
-          invitee_id
-          isDone
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
     <App />

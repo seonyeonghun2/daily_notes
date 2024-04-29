@@ -1,56 +1,40 @@
-import { useState, useRef, useEffect } from "react";
-import "./App.css";
+import React, { useState, useEffect } from "react";
 import NotesHeader from "./components/NotesHeader";
 import NotesFinder from "./components/NotesFinder";
 import NotesInput from "./components/NotesInput";
 import NotesList from "./components/NotesList";
 import NotesFooter from "./components/NotesFooter";
+import { useQuery, gql } from "@apollo/client";
 
-import { ApolloConsumer } from "@apollo/client";
-
-function App({ client }) {
+function App() {
   const [notes, setNotes] = useState([]);
   const [error, setError] = useState(null);
   const [newNoteIsOpen, setNewNoteIsOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchNotes = async (client) => {
-      try {
-        const GET_NOTES = `#graphql
-          query GetNotes {
-            notes {
-              id
-              title
-              content
-              isDone
-            }
-          }
-        `;
-
-        const { data, errors } = await client.query({ query: GET_NOTES });
-        if (errors) {
-          setError(errors);
-        } else {
-          setNotes(data.notes);
-        }
-      } catch (error) {
-        console.error("Error Fetching Notes:", error);
-        setError(error);
+  const GET_NOTELISTS = gql`
+    query GetNoteLists {
+      notes {
+        id
+        title
+        content
+        invitee_id
+        due_date
+        author_id
       }
-    };
-
-    // 컴포넌트가 마운트될 때 데이터를 가져옴
-    if (client) {
-      fetchNotes();
     }
-  }, [client, notes]); // 빈 의존성 배열
+  `;
+  function DisplayNoteLists() {
+    const { loading, error, data } = useQuery(GET_NOTELISTS);
 
-  if (error) {
-    return (
-      <div className='App'>
-        <p>GraphQL Error: {error.message}</p>
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+
+    return data.notes.map(({ id, title, content, due_date }) => (
+      <div key={id}>
+        <p>{title}</p>
+        <p>{content}</p>
+        <p>{due_date}</p>
       </div>
-    );
+    ));
   }
 
   return (
@@ -58,12 +42,7 @@ function App({ client }) {
       <NotesHeader />
       <NotesFinder noteOpener={setNewNoteIsOpen} />
       {newNoteIsOpen && <NotesInput />}
-      <ApolloConsumer>
-        {(client) => {
-          // TodoList 컴포넌트에 todos를 props로 전달
-          return <NotesList notes={notes} error={error} />;
-        }}
-      </ApolloConsumer>
+      <DisplayNoteLists />
       <NotesFooter count={notes.length} />
     </div>
   );

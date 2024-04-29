@@ -19,7 +19,7 @@ const requestLoggerPlugin = {
   },
 };
 
-// Graphql resolvers
+// Graphql resolvers - Query or Mutation
 const resolvers = {
   Query: {
     notes: () => db.notes,
@@ -29,6 +29,10 @@ const resolvers = {
     invitees: () => db.invitees,
     invitee: (parent, args) => {
       return db.invitees.find((invitee) => invitee.id === args.id);
+    },
+    authors: () => db.authors,
+    author: (parent, args) => {
+      return db.authors.find((author) => author.id === args.id);
     },
   },
 };
