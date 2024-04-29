@@ -1,0 +1,9 @@
+version: "2"
+authtoken: 2fcOITm3mxD8lvuBKHpoiLaB9as_6hhm5n1Zskut11aJ9SPqU
+tunnels:
+  graphql:
+    addr: 4000
+    proto: http
+  react_app:
+    addr: 5173
+    proto: http
