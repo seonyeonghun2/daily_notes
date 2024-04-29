@@ -1,0 +1,13 @@
+{
+  "name": "daily_notes",
+  "version": "1.0.0",
+  "description": "Daily Notes App, 당신의 일상을 기록하는 노트앱",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tunnel": "ngrok start --config=./ngrok.yml --all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
