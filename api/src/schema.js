@@ -6,7 +6,7 @@ const typeDefs = `#graphql
     content: String!,
     due_date: String!,
     isDone: Boolean,
-    invitee_id: String!,
+    invitee_id: [String!],
     author_id: String!
   }
   type Invitee {
