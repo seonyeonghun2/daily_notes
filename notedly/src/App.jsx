@@ -1,30 +1,71 @@
 import { useState, useRef, useEffect } from "react";
 import "./App.css";
+import NotesHeader from "./components/NotesHeader";
+import NotesFinder from "./components/NotesFinder";
+import NotesInput from "./components/NotesInput";
+import NotesList from "./components/NotesList";
+import NotesFooter from "./components/NotesFooter";
 
-import TodoHeader from "./components/TodoHeader";
-import TodoInput from "./components/TodoInput";
-import TodoList from "./components/TodoList";
-import TodoFooter from "./components/TodoFooter";
+import { ApolloConsumer } from "@apollo/client";
 
-function App() {
-  const [todos, setTodos] = useState([]);
-  const idRef = useRef(0);
-  const onCreate = (content, isDone) => {
-    const newTodo = {
-      id: idRef.current++,
-      content: content,
-      isDone: isDone,
-      created_at: new Date().toLocaleString(),
+function App({ client }) {
+  const [notes, setNotes] = useState([]);
+  const [error, setError] = useState(null);
+  const [newNoteIsOpen, setNewNoteIsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchNotes = async (client) => {
+      try {
+        const GET_NOTES = `#graphql
+          query GetNotes {
+            notes {
+              id
+              title
+              content
+              isDone
+            }
+          }
+        `;
+
+        const { data, errors } = await client.query({ query: GET_NOTES });
+        if (errors) {
+          setError(errors);
+        } else {
+          setNotes(data.notes);
+        }
+      } catch (error) {
+        console.error("Error Fetching Notes:", error);
+        setError(error);
+      }
     };
-    setTodos(...todos, newTodo);
-  };
+
+    // 컴포넌트가 마운트될 때 데이터를 가져옴
+    if (client) {
+      fetchNotes();
+    }
+  }, [client, notes]); // 빈 의존성 배열
+
+  if (error) {
+    return (
+      <div className='App'>
+        <p>GraphQL Error: {error.message}</p>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <TodoHeader />
-      <TodoInput />
-      <TodoList />
-      <TodoFooter />
-    </>
+    <div className='App'>
+      <NotesHeader />
+      <NotesFinder noteOpener={setNewNoteIsOpen} />
+      {newNoteIsOpen && <NotesInput />}
+      <ApolloConsumer>
+        {(client) => {
+          // TodoList 컴포넌트에 todos를 props로 전달
+          return <NotesList notes={notes} error={error} />;
+        }}
+      </ApolloConsumer>
+      <NotesFooter count={notes.length} />
+    </div>
   );
 }
 
