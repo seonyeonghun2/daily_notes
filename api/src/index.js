@@ -22,13 +22,13 @@ const requestLoggerPlugin = {
 // Graphql resolvers
 const resolvers = {
   Query: {
-    todos: () => db.todos,
-    todo: (parent, args) => {
-      return db.todos.find((todo) => todo.id === args.id);
+    notes: () => db.notes,
+    note: (parent, args) => {
+      return db.notes.find((note) => note.id === args.id);
     },
-    authors: () => db.authors,
-    author: (parent, args) => {
-      return db.authors.find((author) => author.id === args.id);
+    invitees: () => db.invitees,
+    invitee: (parent, args) => {
+      return db.invitees.find((invitee) => invitee.id === args.id);
     },
   },
 };
