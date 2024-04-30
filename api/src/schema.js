@@ -6,7 +6,7 @@ const typeDefs = `#graphql
     content: String!,
     due_date: String!,
     isDone: Boolean,
-    invitee_id: [String!],
+    invitee_id: [String!]!,
     author_id: String!
   }
   type Invitee {
@@ -30,7 +30,7 @@ const typeDefs = `#graphql
     author(id: String!): Author
   }
   type Mutation {
-    newNote(content: String): Note!
+    newNote(title: String!,content: String!, invitee_id: [String!]!): Note!
   }
 `;
 

@@ -35,6 +35,33 @@ const resolvers = {
       return db.authors.find((author) => author.id === args.id);
     },
   },
+  Mutation: {
+    newNote: (parent, args) => {
+      try {
+        // 새로운 노트 생성
+        let note = {
+          id: String(db.notes.length + 1),
+          title: args.title,
+          content: args.content,
+          due_date: "2024-04-30",
+          isDone: false,
+          invitee_id: args.invitee_id,
+          author_id: "1000"
+        };
+  
+        // notes 배열에 새로운 노트 추가
+        db.notes.push(note);
+  
+        // 생성된 노트 객체 반환
+        return note; // note 객체는 모든 필수 필드를 포함하고 있어야 함
+      } catch (error) {
+        // 오류 발생 시 적절한 오류 처리
+        console.error('Failed to create new note:', error);
+        throw new Error('Failed to create new note'); // 뮤테이션 실패 처리
+      }
+    },
+  },
+  
 };
 
 const startApolloServer = async () => {
