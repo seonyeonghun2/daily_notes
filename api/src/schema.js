@@ -31,6 +31,7 @@ const typeDefs = `#graphql
   }
   type Mutation {
     newNote(title: String!,content: String!, invitee_id: [String!]!): Note!
+    delNote(id: String!):
   }
 `;
 
