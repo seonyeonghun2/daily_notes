@@ -4,7 +4,7 @@ npm run dev&
 
 # change notedly directory and run development server : vite React F.E
 cd ../notedly
-npm run start&
+npm run dev&
 
 # tunneling two port : B.E and F.E port
 cd ..
