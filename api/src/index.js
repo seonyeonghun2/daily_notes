@@ -43,15 +43,15 @@ const resolvers = {
           id: String(db.notes.length + 1),
           title: args.title,
           content: args.content,
-          due_date: "2024-04-30",
+          due_date: '2024-04-30',
           isDone: false,
           invitee_id: args.invitee_id,
-          author_id: "1000"
+          author_id: '1000',
         };
-  
+
         // notes 배열에 새로운 노트 추가
         db.notes.push(note);
-  
+
         // 생성된 노트 객체 반환
         return note; // note 객체는 모든 필수 필드를 포함하고 있어야 함
       } catch (error) {
@@ -60,8 +60,15 @@ const resolvers = {
         throw new Error('Failed to create new note'); // 뮤테이션 실패 처리
       }
     },
+    delNote: (parent, args) => {
+      const noteIndex = db.notes.findIndex((note) => note.id === args.id);
+      if (noteIndex == -1) {
+        throw new Error('Note not found!');
+      }
+      db.notes.splice(noteIndex, 1);
+      return true;
+    },
   },
-  
 };
 
 const startApolloServer = async () => {
